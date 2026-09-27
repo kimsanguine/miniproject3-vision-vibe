@@ -1,411 +1,112 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="ko">
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
   <base href="/miniproject3-vision-vibe/">
-
   <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="손짓, 사물 인식, 가위바위보, 문서 스캔까지 설치 없이 즐기는 브라우저 비전 놀이터입니다.">
-  <!-- 디자인 스펙 6절 — 브라우저 크롬 UI 색을 앱 배경(#0F0F23)과 통일 -->
-  <meta name="theme-color" content="#0F0F23">
-
-  <!-- iOS meta tags & icons -->
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="VISION VIBE">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
-
+  <meta name="theme-color" content="#0f1023">
   <meta property="og:type" content="website">
   <meta property="og:title" content="VISION VIBE | 브라우저 비전 놀이터">
   <meta property="og:description" content="카메라로 놀고, 보고, 만드는 6가지 실시간 비전 체험">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="VISION VIBE | 브라우저 비전 놀이터">
-  <meta name="twitter:description" content="카메라로 놀고, 보고, 만드는 6가지 실시간 비전 체험">
-
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="styles/app.css">
   <title>VISION VIBE | 브라우저 비전 놀이터</title>
-  <link rel="manifest" href="manifest.json">
-
-  <script>
-    // 디자인 스펙 4절 2안 — 1차 방법(`MediaQuery.disableAnimations`)이 Flutter
-    // 3.41.7 웹에서 브라우저의 prefers-reduced-motion 을 반영하지 않는 것을
-    // 라이브로 실측 확인(matchMedia 는 true 인데 카운트다운이 그대로 재생됨)해
-    // 스펙이 지정한 matchMedia 브릿지를 추가했다.
-    window.prefersReducedMotion = function () {
-      return matchMedia('(prefers-reduced-motion: reduce)').matches;
-    };
-  </script>
 </head>
 <body>
-  <!-- 탭 1: 손만 감지 -->
-  <div id="mp-root-hand" style="position:relative; width:640px; height:480px;">
-    <video id="mp-video-hand" style="display:none;" playsinline></video>
-    <canvas id="mp-canvas-hand" width="640" height="480"></canvas>
-  </div>
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="VISION VIBE 홈">
+      <span class="brand-mark">⌘</span>
+      <span><strong>VISION VIBE</strong><small>브라우저에서 만나는 비전 놀이터</small></span>
+    </a>
+    <nav class="tab-nav" aria-label="비전 체험 메뉴" role="tablist">
+      <button type="button" role="tab" data-tab="home" aria-selected="true">⌂<span>홈</span></button>
+      <button type="button" role="tab" data-tab="hand">☝<span>손 조작</span></button>
+      <button type="button" role="tab" data-tab="rps">🎮<span>가위바위보</span></button>
+      <button type="button" role="tab" data-tab="object">◈<span>사물 인식</span></button>
+      <button type="button" role="tab" data-tab="magic">✦<span>마법 지팡이</span></button>
+      <button type="button" role="tab" data-tab="scan">▣<span>문서 스캔</span></button>
+      <button type="button" role="tab" data-tab="recycle">♻<span>재활용 분류</span></button>
+    </nav>
+  </header>
 
-  <!-- 탭 2: 손+얼굴 동시 감지 -->
-  <div id="mp-root-handface" style="position:relative; width:640px; height:480px;">
-    <video id="mp-video-handface" style="display:none;" playsinline></video>
-    <canvas id="mp-canvas-handface" width="640" height="480"></canvas>
-  </div>
+  <main class="app-shell">
+    <section class="panel home-panel" data-panel="home" role="tabpanel">
+      <div class="hero-card">
+        <div class="hero-copy">
+          <p class="live-badge">● LIVE, 설치 없이 바로 체험</p>
+          <h1>카메라로 놀고,<br>보고, 만들어보세요</h1>
+          <p>손짓으로 조작하고, 사물을 알아보고, 문서를 스캔하는<br>6가지 실시간 비전 체험을 브라우저에서 만나보세요.</p>
+          <button class="button primary" type="button" data-go="hand">☝ 손 조작부터 시작하기</button>
+        </div>
+        <img src="assets/assets/images/vision-hero.png" alt="노트북 카메라로 손짓과 문서 스캔을 체험하는 일러스트" width="836" height="470">
+      </div>
+      <div class="trust-strip">
+        <span>▣ 카메라는 시작 버튼을 누를 때만 켜져요</span><span>◉ 영상은 브라우저 안에서만 처리돼요</span><span>✓ 설치나 회원가입이 필요 없어요</span>
+      </div>
+      <div class="section-heading"><h2>어떤 체험부터 해볼까요?</h2><p>원하는 카드를 누르면 바로 체험 화면으로 이동해요.</p></div>
+      <div class="feature-grid">
+        <button class="feature-card" data-go="hand"><b>☝</b><strong>손 조작</strong><span>손과 얼굴의 움직임을 찾아요</span></button>
+        <button class="feature-card" data-go="rps"><b>🎮</b><strong>가위바위보 대결</strong><span>손짓을 내면 AI가 맞대결해요</span></button>
+        <button class="feature-card" data-go="object"><b>◈</b><strong>사물 인식</strong><span>카메라 속 물건의 이름을 찾아요</span></button>
+        <button class="feature-card" data-go="magic"><b>✦</b><strong>마법 지팡이</strong><span>손으로 빛의 궤적을 그려요</span></button>
+        <button class="feature-card" data-go="scan"><b>▣</b><strong>문서 스캔</strong><span>문서 영역을 찾아 깔끔하게 잘라요</span></button>
+        <button class="feature-card" data-go="recycle"><b>♻</b><strong>재활용 분류</strong><span>다음 체험도 곧 준비할게요</span></button>
+      </div>
+    </section>
 
-  <!-- 탭 3: 사물인식 (이름+확률 표시) -->
-  <div id="mp-root-object" style="position:relative; width:640px; height:480px;">
-    <video id="mp-video-object" style="display:none;" playsinline></video>
-    <canvas id="mp-canvas-object" width="640" height="480"></canvas>
-  </div>
+    <section class="panel" data-panel="hand" role="tabpanel" hidden>
+      <div class="panel-heading"><p>손 조작</p><h1>손으로 화면을 움직여보세요</h1><span>원하는 모드를 고르고 시작을 누르세요.</span></div>
+      <div class="mode-picker" role="group" aria-label="손 조작 모드"><button class="active" data-hand-mode="only">손만</button><button data-hand-mode="face">손+얼굴</button></div>
+      <div class="vision-stage"><div id="mp-root-hand" class="camera-root"><video id="mp-video-hand" playsinline></video><canvas id="mp-canvas-hand" width="640" height="480"></canvas></div><div id="mp-root-handface" class="camera-root" hidden><video id="mp-video-handface" playsinline></video><canvas id="mp-canvas-handface" width="640" height="480"></canvas></div><p class="status" data-status="hand">대기 중</p></div>
+      <div class="actions"><button class="button primary" data-action="startHandOnly">▶ 시작</button><button class="button secondary" data-action="stopHand">■ 중지</button></div>
+    </section>
 
-  <!-- 탭 4: 가위바위보 (mediapipe1_hand_lite/hand_lite/gesture.py 판정 로직 JS 포팅) -->
-  <div id="mp-root-rps" style="position:relative; width:640px; height:480px;">
-    <video id="mp-video-rps" style="display:none;" playsinline></video>
-    <canvas id="mp-canvas-rps" width="640" height="480"></canvas>
-  </div>
+    <section class="panel" data-panel="rps" role="tabpanel" hidden>
+      <div class="panel-heading"><p>가위바위보 대결</p><h1>AI와 손짓 대결을 해보세요</h1><span>카메라를 시작한 뒤 손 모양을 보여주고 판정하세요.</span></div>
+      <div class="vision-stage"><div id="mp-root-rps" class="camera-root"><video id="mp-video-rps" playsinline></video><canvas id="mp-canvas-rps" width="640" height="480"></canvas></div><p class="status" data-status="rps">대기 중</p></div>
+      <div class="scoreboard" aria-label="가위바위보 점수"><span>승 <b id="rps-wins">0</b></span><span>패 <b id="rps-losses">0</b></span><span>무 <b id="rps-draws">0</b></span></div>
+      <div class="actions"><button class="button primary" data-action="startRps">▶ 시작</button><button class="button secondary" data-action="stopRps">■ 중지</button><button class="button accent" data-action="playRpsRound">🎲 판정!</button></div>
+    </section>
 
-  <!-- 탭 5: 마법 지팡이 (opencv1_magic_wand 색상추적 JS 포팅) -->
-  <div id="mp-root-magicwand" style="position:relative; width:640px; height:480px;">
-    <video id="mp-video-magicwand" style="display:none;" playsinline></video>
-    <canvas id="mp-canvas-magicwand" width="640" height="480"></canvas>
-  </div>
+    <section class="panel" data-panel="object" role="tabpanel" hidden>
+      <div class="panel-heading"><p>사물 인식</p><h1>카메라 속 사물을 찾아보세요</h1><span>물체 이름과 인식 확률을 화면에 표시합니다.</span></div>
+      <div class="vision-stage"><div id="mp-root-object" class="camera-root"><video id="mp-video-object" playsinline></video><canvas id="mp-canvas-object" width="640" height="480"></canvas></div><p class="status" data-status="object">대기 중</p></div>
+      <div class="actions"><button class="button primary" data-action="startObjectOnly">▶ 시작</button><button class="button secondary" data-action="stopObjectOnly">■ 중지</button></div>
+    </section>
 
-  <!-- 탭 6: 문서 스캔 (opencv3_doc_scanner opencv.js 포팅) — 라이브 미리보기 + 결과 -->
-  <!-- Dart 쪽 SizedBox(_liveWidth/_liveHeight, doc_scanner_tab.dart)와 이 div
-       크기를 반드시 일치시킨다 — 다르면 Flutter platform view wrapper와 실제
-       DOM 크기가 어긋나 컨텐츠가 넘치거나 짤린다. 캔버스 픽셀 해상도(640x480)는
-       카메라 캡처 품질용이라 그대로 두고, style 로 표시 크기만 축소한다. -->
-  <div id="mp-root-docscan-live" style="position:relative; width:360px; height:270px;">
-    <video id="mp-video-docscan" style="display:none;" playsinline></video>
-    <canvas id="mp-canvas-docscan" width="640" height="480" style="width:100%; height:100%;"></canvas>
-  </div>
-  <div id="mp-root-docscan-result" style="position:relative; width:140px; height:105px;">
-    <canvas id="mp-canvas-docscan-result" style="width:100%; height:100%;"></canvas>
-  </div>
+    <section class="panel" data-panel="magic" role="tabpanel" hidden>
+      <div class="panel-heading"><p>마법 지팡이</p><h1>빛나는 선을 그려보세요</h1><span>카메라 속 손의 움직임을 따라 빛이 이어집니다.</span></div>
+      <div class="vision-stage"><div id="mp-root-magicwand" class="camera-root"><video id="mp-video-magicwand" playsinline></video><canvas id="mp-canvas-magicwand" width="640" height="480"></canvas></div><p class="status" data-status="magic">대기 중</p></div>
+      <div class="actions"><button class="button primary" data-action="startMagicWand">▶ 시작</button><button class="button secondary" data-action="stopMagicWand">■ 중지</button><button class="button accent" data-action="clearMagicWandTrail">지우기</button><button class="button accent" data-action="cycleMagicWandColor">색상 변경</button></div>
+    </section>
 
-  <!--
-    You can customize the "flutter_bootstrap.js" script.
-    This is useful to provide a custom configuration to the Flutter loader
-    or to give the user feedback during the initialization process.
+    <section class="panel" data-panel="scan" role="tabpanel" hidden>
+      <div class="panel-heading"><p>문서 스캔</p><h1>문서를 반듯하게 스캔하세요</h1><span>문서를 화면에 맞춘 뒤 스캔 버튼을 누르세요.</span></div>
+      <div class="scan-layout"><div class="vision-stage compact"><div id="mp-root-docscan-live" class="camera-root"><video id="mp-video-docscan" playsinline></video><canvas id="mp-canvas-docscan" width="640" height="480"></canvas></div><p class="status" data-status="scan">대기 중</p></div><div class="scan-result"><p>스캔 결과</p><div id="mp-root-docscan-result"><canvas id="mp-canvas-docscan-result" width="640" height="480"></canvas></div></div></div>
+      <div class="actions"><button class="button primary" data-action="startDocScanner">▶ 시작</button><button class="button secondary" data-action="stopDocScanner">■ 중지</button><button class="button accent" data-action="captureAndScan">▣ 스캔</button></div>
+    </section>
 
-    For more details:
-    * https://docs.flutter.dev/platform-integration/web/initialization
-  -->
-  <script src="flutter_bootstrap.js" async></script>
+    <section class="panel coming-soon" data-panel="recycle" role="tabpanel" hidden><p>♻</p><h1>재활용 분류 체험은 준비 중입니다</h1><span>다음 업데이트에서 만나요.</span><button class="button primary" data-go="home">홈으로 돌아가기</button></section>
+  </main>
 
   <script type="module">
-    // 첫 화면에서는 MediaPipe 번들·WASM·모델을 받지 않는다. 실제 감지 탭에서
-    // "시작"을 눌렀을 때만 가져와, 홈 화면의 시작 시간을 짧게 유지한다.
     let visionTasksPromise = null;
     let visionTasks = null;
-    function loadVisionTasks() {
-      if (!visionTasksPromise) {
-        visionTasksPromise = import(
-          "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.21/vision_bundle.mjs"
-        ).then((tasks) => {
-          visionTasks = tasks;
-          return tasks;
-        });
-      }
-      return visionTasksPromise;
-    }
-
-    const WASM_BASE_URL =
-      "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.21/wasm";
-    const HAND_MODEL_URL =
-      "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task";
-    // FaceDetector/ObjectDetector는 .task 번들이 없고 .tflite를 그대로 modelAssetPath로 받는다
-    // (hand_landmarker와 파일 포맷이 다름 — 버킷을 직접 뒤져서 확인함).
-    const FACE_MODEL_URL =
-      "https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite";
-    // EfficientDet-Lite2, COCO 80종(person/car/dog/bottle/cell phone 등 범용
-    // 카테고리) 사전학습. Lite0보다 무겁지만 더 정확 — Lite0은 근접·핸드헬드
-    // 촬영에서 오분류가 심해 교체함(실측: 핸드폰/로션을 전부 같은 라벨로 오인식).
-    // 그래도 COCO 카테고리 자체가 범용이라 "정확한 제품명"까지는 못 맞춘다 —
-    // 이게 필요하면 결국 YOLO 커스텀 파인튜닝(Part2 방식)으로 가야 한다.
-    const OBJECT_MODEL_URL =
-      "https://storage.googleapis.com/mediapipe-models/object_detector/efficientdet_lite2/float16/1/efficientdet_lite2.tflite";
-
-    // WASM 런타임은 탭 3개가 하나만 공유해서 로드한다 (탭마다 새로 받을 이유가 없다).
+    function loadVisionTasks() { if (!visionTasksPromise) visionTasksPromise = import("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.21/vision_bundle.mjs").then((tasks) => (visionTasks = tasks)); return visionTasksPromise; }
+    const WASM_BASE_URL = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.21/wasm";
+    const HAND_MODEL_URL = "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task";
+    const FACE_MODEL_URL = "https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite";
+    const OBJECT_MODEL_URL = "https://storage.googleapis.com/mediapipe-models/object_detector/efficientdet_lite2/float16/1/efficientdet_lite2.tflite";
     let sharedFilesetPromise = null;
-    function getSharedFileset() {
-      if (!sharedFilesetPromise) {
-        sharedFilesetPromise = loadVisionTasks().then(({ FilesetResolver }) =>
-          FilesetResolver.forVisionTasks(WASM_BASE_URL)
-        );
-      }
-      return sharedFilesetPromise;
-    }
-
-    // ── 그리기 헬퍼 (탭마다 필요한 것만 조합해서 쓴다) ──────────────────
-    function drawHandLandmarks(ctx, canvas, handsLandmarks) {
-      for (const landmarks of handsLandmarks) {
-        ctx.strokeStyle = "#00FF00";
-        ctx.lineWidth = 3;
-        for (const connection of visionTasks.HandLandmarker.HAND_CONNECTIONS) {
-          const from = landmarks[connection.start];
-          const to = landmarks[connection.end];
-          if (!from || !to) continue;
-          ctx.beginPath();
-          ctx.moveTo(from.x * canvas.width, from.y * canvas.height);
-          ctx.lineTo(to.x * canvas.width, to.y * canvas.height);
-          ctx.stroke();
-        }
-        ctx.fillStyle = "#FF0000";
-        for (const point of landmarks) {
-          ctx.beginPath();
-          ctx.arc(point.x * canvas.width, point.y * canvas.height, 5, 0, 2 * Math.PI);
-          ctx.fill();
-        }
-      }
-    }
-
-    function drawFaceDetections(ctx, canvas, faceDetections) {
-      for (const detection of faceDetections) {
-        const box = detection.boundingBox;
-        ctx.strokeStyle = "#0080FF";
-        ctx.lineWidth = 3;
-        ctx.strokeRect(box.originX, box.originY, box.width, box.height);
-        ctx.fillStyle = "#FFFF00";
-        for (const kp of detection.keypoints || []) {
-          ctx.beginPath();
-          ctx.arc(kp.x * canvas.width, kp.y * canvas.height, 4, 0, 2 * Math.PI);
-          ctx.fill();
-        }
-      }
-    }
-
-    // 사물인식 탭 전용 — 박스 위에 "카테고리명 확률%"을 라벨로 그린다.
-    function drawObjectDetections(ctx, canvas, objectDetections) {
-      ctx.font = "16px sans-serif";
-      for (const detection of objectDetections) {
-        const box = detection.boundingBox;
-        const top = detection.categories[0];
-        ctx.strokeStyle = "#FF8000";
-        ctx.lineWidth = 3;
-        ctx.strokeRect(box.originX, box.originY, box.width, box.height);
-
-        const label = (top?.categoryName || "?") + " " + Math.round((top?.score || 0) * 100) + "%";
-        const textWidth = ctx.measureText(label).width;
-        ctx.fillStyle = "#FF8000";
-        ctx.fillRect(box.originX, box.originY - 20, textWidth + 8, 20);
-        ctx.fillStyle = "#000000";
-        ctx.fillText(label, box.originX + 4, box.originY - 5);
-      }
-    }
-
-    // ── 탭 공통 컨트롤러 팩토리 ────────────────────────────────────────
-    // 각 탭은 자기 video/canvas/모델 조합만 다르고, 카메라 열기·rAF 루프·
-    // 에러 처리·정리 로직은 완전히 동일해서 하나로 묶었다.
-    function createController({ videoId, canvasId, statusEvent, setupModels, detectAndDraw }) {
-      const video = document.getElementById(videoId);
-      const canvas = document.getElementById(canvasId);
-      const ctx = canvas.getContext("2d");
-
-      let models = null;
-      let stream = null;
-      let rafId = null;
-      let lastVideoTime = -1;
-      let lastDetectionAt = -Infinity;
-      let lastStatusAt = -Infinity;
-      let running = false;
-
-      const DETECTION_INTERVAL_MS = 1000 / 15;
-      const STATUS_INTERVAL_MS = 250;
-
-      function emitStatus(status) {
-        window.dispatchEvent(new CustomEvent(statusEvent, { detail: { status } }));
-      }
-      function emitError(err) {
-        emitStatus("오류: " + (err && err.message ? err.message : String(err)));
-      }
-      function emitDetectionStatus(status, now) {
-        if (now - lastStatusAt < STATUS_INTERVAL_MS) return;
-        lastStatusAt = now;
-        emitStatus(status);
-      }
-      function releaseResources() {
-        if (rafId !== null) {
-          cancelAnimationFrame(rafId);
-          rafId = null;
-        }
-        if (stream) {
-          stream.getTracks().forEach((track) => track.stop());
-          stream = null;
-        }
-        video.srcObject = null;
-        lastVideoTime = -1;
-        lastDetectionAt = -Infinity;
-      }
-
-      function renderLoop() {
-        if (!running) return;
-        try {
-          if (video.readyState >= 2 && video.currentTime !== lastVideoTime) {
-            lastVideoTime = video.currentTime;
-            const now = performance.now();
-            if (now - lastDetectionAt < DETECTION_INTERVAL_MS) {
-              rafId = requestAnimationFrame(renderLoop);
-              return;
-            }
-            lastDetectionAt = now;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            const statusText = detectAndDraw(video, ctx, canvas, models, now);
-            emitDetectionStatus(statusText, now);
-          }
-          rafId = requestAnimationFrame(renderLoop);
-        } catch (err) {
-          running = false;
-          releaseResources();
-          emitError(err);
-        }
-      }
-
-      async function start() {
-        if (running) return;
-        running = true;
-        try {
-          if (!models) {
-            emitStatus("모델 로딩 중...");
-            const fileset = await getSharedFileset();
-            // opencv.js(Emscripten 빌드)가 초기화 후 남겨두는 전역 window.Module을
-            // MediaPipe의 WASM 글루(마찬가지로 Emscripten 빌드)가 그대로 채택해,
-            // 이미 끝난 모듈의 초기화 콜백을 무한 대기하며 렌더러가 멈추는 문제가
-            // 있다(통제 실험으로 확인: opencv.js 로드 후 이 삭제 없이는 GPU/CPU
-            // delegate 모두 hang, 삭제하면 정상). opencv.js는 이 시점에 이미 자신의
-            // 초기화를 끝내고 cv 전역에 결과를 옮겨둔 뒤라, window.Module을 지워도
-            // 마법 지팡이/문서 스캔 탭 기능에는 영향이 없다.
-            delete window.Module;
-            models = await setupModels(fileset);
-          }
-
-          emitStatus("카메라 권한 요청 중...");
-          if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            throw new Error(
-              "이 브라우저·주소에서는 카메라를 사용할 수 없습니다 (HTTPS 또는 localhost 필요)"
-            );
-          }
-          stream = await navigator.mediaDevices.getUserMedia({
-            video: { width: 640, height: 480 },
-            audio: false,
-          });
-          video.srcObject = stream;
-          await video.play();
-
-          lastVideoTime = -1;
-          rafId = requestAnimationFrame(renderLoop);
-        } catch (err) {
-          running = false;
-          releaseResources();
-          emitError(err);
-        }
-      }
-
-      function stop() {
-        running = false;
-        releaseResources();
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        emitStatus("중지됨");
-      }
-
-      return { start, stop };
-    }
-
-    // ── 탭 1: 손만 ──────────────────────────────────────────────────
-    const handOnly = createController({
-      videoId: "mp-video-hand",
-      canvasId: "mp-canvas-hand",
-      statusEvent: "handOnlyStatus",
-      setupModels: async (fileset) => {
-        const { HandLandmarker } = await loadVisionTasks();
-        return { hand: await HandLandmarker.createFromOptions(fileset, {
-          baseOptions: { modelAssetPath: HAND_MODEL_URL, delegate: "GPU" },
-          runningMode: "VIDEO",
-          numHands: 2,
-        }) };
-      },
-      detectAndDraw: (video, ctx, canvas, models, now) => {
-        const result = models.hand.detectForVideo(video, now);
-        const landmarks = result.landmarks || [];
-        drawHandLandmarks(ctx, canvas, landmarks);
-        return "감지 중 (손 " + landmarks.length + "개)";
-      },
-    });
-
-    // ── 탭 2: 손+얼굴 ────────────────────────────────────────────────
-    const handFace = createController({
-      videoId: "mp-video-handface",
-      canvasId: "mp-canvas-handface",
-      statusEvent: "handFaceStatus",
-      setupModels: async (fileset) => {
-        const { HandLandmarker, FaceDetector } = await loadVisionTasks();
-        return {
-          hand: await HandLandmarker.createFromOptions(fileset, {
-          baseOptions: { modelAssetPath: HAND_MODEL_URL, delegate: "GPU" },
-          runningMode: "VIDEO",
-          numHands: 2,
-          }),
-          face: await FaceDetector.createFromOptions(fileset, {
-          baseOptions: { modelAssetPath: FACE_MODEL_URL, delegate: "GPU" },
-          runningMode: "VIDEO",
-          }),
-        };
-      },
-      detectAndDraw: (video, ctx, canvas, models, now) => {
-        const handResult = models.hand.detectForVideo(video, now);
-        const faceResult = models.face.detectForVideo(video, now);
-        const landmarks = handResult.landmarks || [];
-        const faces = faceResult.detections || [];
-        drawHandLandmarks(ctx, canvas, landmarks);
-        drawFaceDetections(ctx, canvas, faces);
-        return "감지 중 (손 " + landmarks.length + "개, 얼굴 " + faces.length + "개)";
-      },
-    });
-
-    // ── 탭 3: 사물인식 (이름+확률) ──────────────────────────────────
-    const objectOnly = createController({
-      videoId: "mp-video-object",
-      canvasId: "mp-canvas-object",
-      statusEvent: "objectOnlyStatus",
-      setupModels: async (fileset) => {
-        const { ObjectDetector } = await loadVisionTasks();
-        return { object: await ObjectDetector.createFromOptions(fileset, {
-          baseOptions: { modelAssetPath: OBJECT_MODEL_URL, delegate: "GPU" },
-          runningMode: "VIDEO",
-          // 0.5는 근접 촬영 물체를 자주 걸러내서 0.3으로 낮췄다 — 오탐이 늘 수
-          // 있지만, 워크샵 데모에서는 "아예 안 뜬다"보다 "후보가 뜬다"가 낫다.
-          scoreThreshold: 0.3,
-          maxResults: 5,
-        }) };
-      },
-      detectAndDraw: (video, ctx, canvas, models, now) => {
-        const result = models.object.detectForVideo(video, now);
-        const detections = result.detections || [];
-        drawObjectDetections(ctx, canvas, detections);
-        const top = detections[0]?.categories[0];
-        const topLabel = top ? " (1위: " + top.categoryName + " " + Math.round(top.score * 100) + "%)" : "";
-        return "감지 중 (사물 " + detections.length + "개)" + topLabel;
-      },
-    });
-
-    // ── 탭 4: 가위바위보 ────────────────────────────────────────────
-    // 판정 로직은 mediapipe1_hand_lite/hand_lite/gesture.py를 그대로 JS로
-    // 포팅했다 — 실사진 6장(../yolo1_rps/tests/fixtures/)으로 이미 6/6
-    // 검증된 알고리즘이라 새로 튜닝하지 않는다. 좌표계(정규화 0~1, y는
-    // 위쪽일수록 작음)도 Python HandResult와 동일해 그대로 옮길 수 있었다.
+    function getSharedFileset() { if (!sharedFilesetPromise) sharedFilesetPromise = loadVisionTasks().then(({ FilesetResolver }) => FilesetResolver.forVisionTasks(WASM_BASE_URL)); return sharedFilesetPromise; }
+    function drawHandLandmarks(ctx, canvas, hands) { for (const landmarks of hands) { ctx.strokeStyle = "#00ffb2"; ctx.lineWidth = 3; for (const connection of visionTasks.HandLandmarker.HAND_CONNECTIONS) { const from = landmarks[connection.start]; const to = landmarks[connection.end]; if (!from || !to) continue; ctx.beginPath(); ctx.moveTo(from.x * canvas.width, from.y * canvas.height); ctx.lineTo(to.x * canvas.width, to.y * canvas.height); ctx.stroke(); } ctx.fillStyle = "#ff4d8d"; for (const point of landmarks) { ctx.beginPath(); ctx.arc(point.x * canvas.width, point.y * canvas.height, 5, 0, Math.PI * 2); ctx.fill(); } } }
+    function drawFaceDetections(ctx, canvas, faces) { for (const face of faces) { const box = face.boundingBox; ctx.strokeStyle = "#68a7ff"; ctx.lineWidth = 3; ctx.strokeRect(box.originX, box.originY, box.width, box.height); } }
+    function drawObjectDetections(ctx, canvas, detections) { ctx.font = "16px sans-serif"; for (const detection of detections) { const box = detection.boundingBox; const top = detection.categories[0]; const label = `${top?.categoryName || "?"} ${Math.round((top?.score || 0) * 100)}%`; ctx.strokeStyle = "#ffc15e"; ctx.lineWidth = 3; ctx.strokeRect(box.originX, box.originY, box.width, box.height); const width = ctx.measureText(label).width; ctx.fillStyle = "#ffc15e"; ctx.fillRect(box.originX, box.originY - 21, width + 8, 21); ctx.fillStyle = "#101123"; ctx.fillText(label, box.originX + 4, box.originY - 5); } }
+    function createController({ videoId, canvasId, statusEvent, setupModels, detectAndDraw }) { const video = document.getElementById(videoId); const canvas = document.getElementById(canvasId); const ctx = canvas.getContext("2d"); let models = null, stream = null, rafId = null, lastTime = -1, lastDetectionAt = -Infinity, lastStatusAt = -Infinity, running = false; const status = (text) => window.dispatchEvent(new CustomEvent(statusEvent, { detail: { status: text } })); const release = () => { if (rafId !== null) cancelAnimationFrame(rafId); rafId = null; stream?.getTracks().forEach((track) => track.stop()); stream = null; video.srcObject = null; lastTime = -1; lastDetectionAt = -Infinity; }; const loop = () => { if (!running) return; try { if (video.readyState >= 2 && video.currentTime !== lastTime) { lastTime = video.currentTime; const now = performance.now(); if (now - lastDetectionAt >= 1000 / 15) { lastDetectionAt = now; ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.drawImage(video, 0, 0, canvas.width, canvas.height); const text = detectAndDraw(video, ctx, canvas, models, now); if (now - lastStatusAt >= 250) { lastStatusAt = now; status(text); } } } rafId = requestAnimationFrame(loop); } catch (error) { running = false; release(); status(`오류: ${error.message || error}`); } }; return { start: async () => { if (running) return; running = true; try { if (!models) { status("모델 로딩 중..."); const fileset = await getSharedFileset(); delete window.Module; models = await setupModels(fileset); } status("카메라 권한 요청 중..."); stream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480 }, audio: false }); video.srcObject = stream; await video.play(); rafId = requestAnimationFrame(loop); } catch (error) { running = false; release(); status(`오류: ${error.message || error}`); } }, stop: () => { running = false; release(); ctx.clearRect(0, 0, canvas.width, canvas.height); status("중지됨"); } }; }
+    const handOnly = createController({ videoId: "mp-video-hand", canvasId: "mp-canvas-hand", statusEvent: "handOnlyStatus", setupModels: async (fileset) => { const { HandLandmarker } = await loadVisionTasks(); return { hand: await HandLandmarker.createFromOptions(fileset, { baseOptions: { modelAssetPath: HAND_MODEL_URL, delegate: "GPU" }, runningMode: "VIDEO", numHands: 2 }) }; }, detectAndDraw: (video, ctx, canvas, models, now) => { const result = models.hand.detectForVideo(video, now); drawHandLandmarks(ctx, canvas, result.landmarks || []); return `감지 중 (손 ${(result.landmarks || []).length}개)`; } });
+    const handFace = createController({ videoId: "mp-video-handface", canvasId: "mp-canvas-handface", statusEvent: "handFaceStatus", setupModels: async (fileset) => { const { HandLandmarker, FaceDetector } = await loadVisionTasks(); return { hand: await HandLandmarker.createFromOptions(fileset, { baseOptions: { modelAssetPath: HAND_MODEL_URL, delegate: "GPU" }, runningMode: "VIDEO", numHands: 2 }), face: await FaceDetector.createFromOptions(fileset, { baseOptions: { modelAssetPath: FACE_MODEL_URL, delegate: "GPU" }, runningMode: "VIDEO" }) }; }, detectAndDraw: (video, ctx, canvas, models, now) => { const hands = models.hand.detectForVideo(video, now).landmarks || []; const faces = models.face.detectForVideo(video, now).detections || []; drawHandLandmarks(ctx, canvas, hands); drawFaceDetections(ctx, canvas, faces); return `감지 중 (손 ${hands.length}개, 얼굴 ${faces.length}개)`; } });
+    const objectOnly = createController({ videoId: "mp-video-object", canvasId: "mp-canvas-object", statusEvent: "objectOnlyStatus", setupModels: async (fileset) => { const { ObjectDetector } = await loadVisionTasks(); return { object: await ObjectDetector.createFromOptions(fileset, { baseOptions: { modelAssetPath: OBJECT_MODEL_URL, delegate: "GPU" }, runningMode: "VIDEO", scoreThreshold: 0.3, maxResults: 5 }) }; }, detectAndDraw: (video, ctx, canvas, models, now) => { const detections = models.object.detectForVideo(video, now).detections || []; drawObjectDetections(ctx, canvas, detections); return `감지 중 (사물 ${detections.length}개)`; } });
     const RPS_INDEX = [5, 6, 7, 8];
     const RPS_MIDDLE = [9, 10, 11, 12];
     const RPS_RING = [13, 14, 15, 16];
@@ -414,120 +115,30 @@
     const RPS_THUMB_TIP = 4;
     const RPS_INDEX_MCP = 5;
     const RPS_MIDDLE_MCP = 9;
-    // gesture.py와 동일한 임계값 — 실사진 6장 실측 기준 결정(주석은 원본 참고).
     const RPS_THUMB_SPREAD_RATIO_THRESHOLD = 0.57;
-
-    function rpsDist(lm, a, b) {
-      return Math.hypot(lm[a].x - lm[b].x, lm[a].y - lm[b].y);
-    }
-    function rpsIsExtended(lm, finger) {
-      const pip = finger[1];
-      const tip = finger[3];
-      return lm[tip].y < lm[pip].y;
-    }
+    function rpsDist(lm, a, b) { return Math.hypot(lm[a].x - lm[b].x, lm[a].y - lm[b].y); }
+    function rpsIsExtended(lm, finger) { return lm[finger[3]].y < lm[finger[1]].y; }
     function rpsFingersUp(lm) {
-      const index = rpsIsExtended(lm, RPS_INDEX);
-      const middle = rpsIsExtended(lm, RPS_MIDDLE);
-      const ring = rpsIsExtended(lm, RPS_RING);
-      const pinky = rpsIsExtended(lm, RPS_PINKY);
+      const index = rpsIsExtended(lm, RPS_INDEX), middle = rpsIsExtended(lm, RPS_MIDDLE), ring = rpsIsExtended(lm, RPS_RING), pinky = rpsIsExtended(lm, RPS_PINKY);
       const handSize = rpsDist(lm, RPS_WRIST, RPS_MIDDLE_MCP);
-      let thumb = false;
-      if (handSize > 0) {
-        const spreadRatio = rpsDist(lm, RPS_THUMB_TIP, RPS_INDEX_MCP) / handSize;
-        thumb = spreadRatio > RPS_THUMB_SPREAD_RATIO_THRESHOLD;
-      }
+      const thumb = handSize > 0 && rpsDist(lm, RPS_THUMB_TIP, RPS_INDEX_MCP) / handSize > RPS_THUMB_SPREAD_RATIO_THRESHOLD;
       return { thumb, index, middle, ring, pinky };
     }
-    // 가위 판정에서 엄지는 무시한다 — 실제 사람은 가위를 낼 때 엄지를
-    // 벌린 채로 내기 때문(원본 gesture.py 주석과 동일한 이유).
     function classifyGesture(lm) {
       if (!lm || lm.length !== 21) return "UNKNOWN";
       const { thumb, index, middle, ring, pinky } = rpsFingersUp(lm);
-      const any = thumb || index || middle || ring || pinky;
-      const all = thumb && index && middle && ring && pinky;
-      if (!any) return "ROCK";
-      if (all) return "PAPER";
-      if (index && middle && !ring && !pinky) return "SCISSORS";
-      return "UNKNOWN";
+      if (!(thumb || index || middle || ring || pinky)) return "ROCK";
+      if (thumb && index && middle && ring && pinky) return "PAPER";
+      return index && middle && !ring && !pinky ? "SCISSORS" : "UNKNOWN";
     }
-
-    const RPS_LABEL_KO = { ROCK: "바위 ✊", PAPER: "보 ✋", SCISSORS: "가위 ✌️", UNKNOWN: "인식 안 됨" };
-
-    function judgeRps(player, ai) {
-      if (player === "UNKNOWN" || ai === "UNKNOWN") return "판정불가";
-      if (player === ai) return "무승부";
-      const beats = { ROCK: "SCISSORS", SCISSORS: "PAPER", PAPER: "ROCK" };
-      return beats[player] === ai ? "승리" : "패배";
-    }
-
-    let rpsLastGesture = "UNKNOWN";
-    let rpsAiMove = null;
-    let rpsResultText = "";
-
-    const rpsOnly = createController({
-      videoId: "mp-video-rps",
-      canvasId: "mp-canvas-rps",
-      statusEvent: "rpsStatus",
-      setupModels: async (fileset) => {
-        const { HandLandmarker } = await loadVisionTasks();
-        return { hand: await HandLandmarker.createFromOptions(fileset, {
-          baseOptions: { modelAssetPath: HAND_MODEL_URL, delegate: "GPU" },
-          runningMode: "VIDEO",
-          numHands: 1,
-        }) };
-      },
-      detectAndDraw: (video, ctx, canvas, models, now) => {
-        const result = models.hand.detectForVideo(video, now);
-        const landmarksList = result.landmarks || [];
-        drawHandLandmarks(ctx, canvas, landmarksList);
-
-        rpsLastGesture = landmarksList.length > 0 ? classifyGesture(landmarksList[0]) : "UNKNOWN";
-
-        ctx.font = "bold 28px sans-serif";
-        ctx.fillStyle = "#00FFAA";
-        ctx.fillText("내 패: " + RPS_LABEL_KO[rpsLastGesture], 10, 35);
-        if (rpsAiMove) {
-          ctx.fillStyle = "#FFAA00";
-          ctx.fillText("AI 패: " + RPS_LABEL_KO[rpsAiMove], 10, 70);
-        }
-        if (rpsResultText) {
-          ctx.fillStyle = "#FFFFFF";
-          ctx.fillText(rpsResultText, 10, 105);
-        }
-
-        return "인식 중 (" + rpsLastGesture + ")";
-      },
-    });
-
-    // "판정!" 버튼에서 호출 — 현재 프레임의 내 패를 고정하고 AI는 무작위로 낸다.
-    // 승패 판정은 순수 규칙(가위>보>바위>가위)이며 모델에 묻지 않는다.
-    window.playRpsRound = function () {
-      const moves = ["ROCK", "PAPER", "SCISSORS"];
-      rpsAiMove = moves[Math.floor(Math.random() * moves.length)];
-      const result = judgeRps(rpsLastGesture, rpsAiMove);
-      rpsResultText =
-        "내 패: " + RPS_LABEL_KO[rpsLastGesture] + " vs AI: " + RPS_LABEL_KO[rpsAiMove] + " -> " + result;
-      window.dispatchEvent(
-        new CustomEvent("rpsRoundResult", {
-          detail: { player: rpsLastGesture, ai: rpsAiMove, result: result },
-        })
-      );
-    };
-
-    window.startHandOnly = handOnly.start;
-    window.stopHandOnly = handOnly.stop;
-    window.startHandFace = handFace.start;
-    window.stopHandFace = handFace.stop;
-    window.startObjectOnly = objectOnly.start;
-    window.stopObjectOnly = objectOnly.stop;
-    window.startRps = rpsOnly.start;
-    window.stopRps = rpsOnly.stop;
+    const labels = { ROCK: "바위 ✊", PAPER: "보 ✋", SCISSORS: "가위 ✌️", UNKNOWN: "인식 안 됨" };
+    let lastGesture = "UNKNOWN", aiMove = null, resultText = "";
+    const rpsOnly = createController({ videoId: "mp-video-rps", canvasId: "mp-canvas-rps", statusEvent: "rpsStatus", setupModels: async (fileset) => { const { HandLandmarker } = await loadVisionTasks(); return { hand: await HandLandmarker.createFromOptions(fileset, { baseOptions: { modelAssetPath: HAND_MODEL_URL, delegate: "GPU" }, runningMode: "VIDEO", numHands: 1 }) }; }, detectAndDraw: (video, ctx, canvas, models, now) => { const hands = models.hand.detectForVideo(video, now).landmarks || []; drawHandLandmarks(ctx, canvas, hands); lastGesture = hands.length ? classifyGesture(hands[0]) : "UNKNOWN"; ctx.font = "bold 25px sans-serif"; ctx.fillStyle = "#fff"; ctx.fillText(`내 패: ${labels[lastGesture]}`, 14, 36); if (resultText) ctx.fillText(resultText, 14, 72); return `인식 중 (${labels[lastGesture]})`; } });
+    window.playRpsRound = () => { const moves = ["ROCK", "PAPER", "SCISSORS"]; aiMove = moves[Math.floor(Math.random() * moves.length)]; const result = lastGesture === "UNKNOWN" ? "판정불가" : lastGesture === aiMove ? "무승부" : ({ ROCK: "SCISSORS", SCISSORS: "PAPER", PAPER: "ROCK" }[lastGesture] === aiMove ? "승리" : "패배"); resultText = `${labels[lastGesture]} vs ${labels[aiMove]}: ${result}`; window.dispatchEvent(new CustomEvent("rpsRoundResult", { detail: { result } })); };
+    Object.assign(window, { startHandOnly: handOnly.start, stopHandOnly: handOnly.stop, startHandFace: handFace.start, stopHandFace: handFace.stop, startObjectOnly: objectOnly.start, stopObjectOnly: objectOnly.stop, startRps: rpsOnly.start, stopRps: rpsOnly.stop });
   </script>
-
-  <!-- 마법 지팡이(순수 Canvas, opencv.js 불필요) — 위 모듈 스크립트와 독립적으로 동작한다 -->
   <script src="js/magic_wand.js"></script>
-
-  <!-- 문서 스캔은 사용자가 시작할 때만 opencv.js(WASM)를 불러온다. -->
   <script src="js/doc_scanner.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>

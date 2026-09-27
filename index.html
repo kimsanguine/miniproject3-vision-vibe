@@ -64,9 +64,11 @@
 
     <section class="panel" data-panel="rps" role="tabpanel" hidden>
       <div class="panel-heading"><p>가위바위보 대결</p><h1>내 손모양으로 AI와 대결하세요</h1><span>카메라가 인식한 내 패와 AI의 무작위 패로 승패를 냅니다.</span></div>
-      <ol class="how-it-works" aria-label="가위바위보 사용 방법"><li><b>1. 시작</b>을 누르고 카메라를 허용하세요.</li><li><b>2. 손바닥을 카메라 쪽으로</b> 보이며 손가락은 위로 향하게 하세요. 주먹은 바위, 다섯 손가락은 보, 검지·중지만 펴면 가위입니다.</li><li>화면에 <b>내 패</b>가 보이면 그 모양을 유지한 채 <b>판정!</b>을 누르세요.</li></ol>
-      <p class="recognition-tip">AI는 판정할 때마다 바위, 보, 가위 중 하나를 무작위로 냅니다. 손 모양이 불분명하면 “판정불가”가 나옵니다.</p>
+      <ol class="how-it-works" aria-label="가위바위보 사용 방법"><li><b>1. 시작</b>을 누르고 카메라를 허용하세요.</li><li><b>2. 손바닥을 카메라 쪽으로</b> 보이며 손가락은 위로 향하게 하세요. 주먹은 바위, 다섯 손가락은 보, 검지·중지만 펴면 가위입니다.</li><li><b>3. 5초마다 자동 판정</b>합니다. 카운트가 끝나는 순간 손 모양을 내고 있으면 AI의 무작위 패와 승부를 냅니다.</li></ol>
+      <p class="recognition-tip">`판정!`은 기다리지 않고 바로 한 판을 내고 싶을 때만 누르세요. 손 모양이 불분명하면 “판정불가”가 나옵니다.</p>
+      <div class="rps-countdown" aria-live="polite"><span>자동 판정</span><b id="rps-countdown">시작하면 5초 후 첫 판</b></div>
       <div class="vision-stage"><div id="mp-root-rps" class="camera-root"><video id="mp-video-rps" playsinline></video><canvas id="mp-canvas-rps" width="640" height="480"></canvas></div><p class="status" data-status="rps">대기 중</p></div>
+      <p id="rps-round-result" class="rps-round-result" aria-live="polite">카메라를 시작하면 자동 대결을 준비합니다.</p>
       <div class="scoreboard" aria-label="가위바위보 점수"><span>승 <b id="rps-wins">0</b></span><span>패 <b id="rps-losses">0</b></span><span>무 <b id="rps-draws">0</b></span></div>
       <div class="actions"><button class="button primary" data-action="startRps">▶ 시작</button><button class="button secondary" data-action="stopRps">■ 중지</button><button class="button accent" data-action="playRpsRound">🎲 판정!</button></div>
     </section>
@@ -138,7 +140,7 @@
     const labels = { ROCK: "바위 ✊", PAPER: "보 ✋", SCISSORS: "가위 ✌️", UNKNOWN: "인식 안 됨" };
     let lastGesture = "UNKNOWN", aiMove = null, resultText = "";
     const rpsOnly = createController({ videoId: "mp-video-rps", canvasId: "mp-canvas-rps", statusEvent: "rpsStatus", setupModels: async (fileset) => { const { HandLandmarker } = await loadVisionTasks(); return { hand: await HandLandmarker.createFromOptions(fileset, { baseOptions: { modelAssetPath: HAND_MODEL_URL, delegate: "GPU" }, runningMode: "VIDEO", numHands: 1 }) }; }, detectAndDraw: (video, ctx, canvas, models, now) => { const hands = models.hand.detectForVideo(video, now).landmarks || []; drawHandLandmarks(ctx, canvas, hands); lastGesture = hands.length ? classifyGesture(hands[0]) : "UNKNOWN"; ctx.font = "bold 25px sans-serif"; ctx.fillStyle = "#fff"; ctx.fillText(`내 패: ${labels[lastGesture]}`, 14, 36); if (resultText) ctx.fillText(resultText, 14, 72); return `인식 중 (${labels[lastGesture]})`; } });
-    window.playRpsRound = () => { const moves = ["ROCK", "PAPER", "SCISSORS"]; aiMove = moves[Math.floor(Math.random() * moves.length)]; const result = lastGesture === "UNKNOWN" ? "판정불가" : lastGesture === aiMove ? "무승부" : ({ ROCK: "SCISSORS", SCISSORS: "PAPER", PAPER: "ROCK" }[lastGesture] === aiMove ? "승리" : "패배"); resultText = `${labels[lastGesture]} vs ${labels[aiMove]}: ${result}`; window.dispatchEvent(new CustomEvent("rpsRoundResult", { detail: { result } })); };
+    window.playRpsRound = () => { const moves = ["ROCK", "PAPER", "SCISSORS"]; aiMove = moves[Math.floor(Math.random() * moves.length)]; const result = lastGesture === "UNKNOWN" ? "판정불가" : lastGesture === aiMove ? "무승부" : ({ ROCK: "SCISSORS", SCISSORS: "PAPER", PAPER: "ROCK" }[lastGesture] === aiMove ? "승리" : "패배"); resultText = `${labels[lastGesture]} vs ${labels[aiMove]}: ${result}`; window.dispatchEvent(new CustomEvent("rpsRoundResult", { detail: { player: labels[lastGesture], ai: labels[aiMove], result } })); };
     Object.assign(window, { startHandOnly: handOnly.start, stopHandOnly: handOnly.stop, startHandFace: handFace.start, stopHandFace: handFace.stop, startObjectOnly: objectOnly.start, stopObjectOnly: objectOnly.stop, startRps: rpsOnly.start, stopRps: rpsOnly.stop });
   </script>
   <script src="js/magic_wand.js"></script>

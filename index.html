@@ -63,7 +63,9 @@
     </section>
 
     <section class="panel" data-panel="rps" role="tabpanel" hidden>
-      <div class="panel-heading"><p>가위바위보 대결</p><h1>AI와 손짓 대결을 해보세요</h1><span>카메라를 시작한 뒤 손 모양을 보여주고 판정하세요.</span></div>
+      <div class="panel-heading"><p>가위바위보 대결</p><h1>내 손모양으로 AI와 대결하세요</h1><span>카메라가 인식한 내 패와 AI의 무작위 패로 승패를 냅니다.</span></div>
+      <ol class="how-it-works" aria-label="가위바위보 사용 방법"><li><b>1. 시작</b>을 누르고 카메라를 허용하세요.</li><li><b>2. 손바닥을 카메라 쪽으로</b> 보이며 손가락은 위로 향하게 하세요. 주먹은 바위, 다섯 손가락은 보, 검지·중지만 펴면 가위입니다.</li><li>화면에 <b>내 패</b>가 보이면 그 모양을 유지한 채 <b>판정!</b>을 누르세요.</li></ol>
+      <p class="recognition-tip">AI는 판정할 때마다 바위, 보, 가위 중 하나를 무작위로 냅니다. 손 모양이 불분명하면 “판정불가”가 나옵니다.</p>
       <div class="vision-stage"><div id="mp-root-rps" class="camera-root"><video id="mp-video-rps" playsinline></video><canvas id="mp-canvas-rps" width="640" height="480"></canvas></div><p class="status" data-status="rps">대기 중</p></div>
       <div class="scoreboard" aria-label="가위바위보 점수"><span>승 <b id="rps-wins">0</b></span><span>패 <b id="rps-losses">0</b></span><span>무 <b id="rps-draws">0</b></span></div>
       <div class="actions"><button class="button primary" data-action="startRps">▶ 시작</button><button class="button secondary" data-action="stopRps">■ 중지</button><button class="button accent" data-action="playRpsRound">🎲 판정!</button></div>
@@ -76,7 +78,9 @@
     </section>
 
     <section class="panel" data-panel="magic" role="tabpanel" hidden>
-      <div class="panel-heading"><p>마법 지팡이</p><h1>빛나는 선을 그려보세요</h1><span>카메라 속 손의 움직임을 따라 빛이 이어집니다.</span></div>
+      <div class="panel-heading"><p>마법 지팡이</p><h1>색깔 물체로 빛의 선을 그려보세요</h1><span>손을 인식하는 기능이 아니라, 카메라에서 찾은 색깔 물체를 따라갑니다.</span></div>
+      <ol class="how-it-works" aria-label="마법 지팡이 사용 방법"><li><b>1. 시작</b>을 누르고 카메라를 허용하세요.</li><li><b>2. 단색 물체</b>를 카메라에 보여주세요. 처음에는 <b>빨간 물체</b>를 움직이면 됩니다. 빨간 펜 뚜껑, 메모지, 장난감이 좋아요.</li><li>물체를 움직이면 무지개 궤적이 그려집니다. <b>색상 변경</b>은 빨강 → 파랑 → 초록 → 노랑 순서로 바뀝니다.</li></ol>
+      <p class="recognition-tip">배경에 같은 색 물체가 많거나 조명이 어두우면 위치가 흔들릴 수 있습니다. 이때는 물체를 크게 보여주고 배경과 색을 다르게 해보세요.</p>
       <div class="vision-stage"><div id="mp-root-magicwand" class="camera-root"><video id="mp-video-magicwand" playsinline></video><canvas id="mp-canvas-magicwand" width="640" height="480"></canvas></div><p class="status" data-status="magic">대기 중</p></div>
       <div class="actions"><button class="button primary" data-action="startMagicWand">▶ 시작</button><button class="button secondary" data-action="stopMagicWand">■ 중지</button><button class="button accent" data-action="clearMagicWandTrail">지우기</button><button class="button accent" data-action="cycleMagicWandColor">색상 변경</button></div>
     </section>

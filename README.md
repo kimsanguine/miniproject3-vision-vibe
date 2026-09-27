@@ -1,6 +1,6 @@
 # vision-vibe
 
-**라이브 데모**: https://kimsanguine.github.io/vision-vibe/
+**라이브 데모**: https://kimsanguine.github.io/miniproject3-vision-vibe/
 
 브라우저에서 OpenCV.js / MediaPipe / YOLO(ONNX)로 손 인식, 가위바위보, 사물 인식, 문서 스캔 등을 체험하는 Flutter Web 앱입니다.
 

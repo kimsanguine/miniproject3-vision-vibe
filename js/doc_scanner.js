@@ -49,6 +49,49 @@
     return typeof cv !== "undefined" && typeof cv.Mat === "function";
   }
 
+  // OpenCV.js와 그 WASM은 문서 스캔에서만 필요하다. 첫 화면에서 내려받지 않고
+  // 사용자가 "카메라 시작"을 눌렀을 때 한 번만 불러온다.
+  const OPENCV_URL = "https://docs.opencv.org/4.9.0/opencv.js";
+  const OPENCV_READY_TIMEOUT_MS = 30000;
+  let cvReadyPromise = null;
+
+  function loadOpenCv() {
+    if (isCvReady()) return Promise.resolve();
+    if (cvReadyPromise) return cvReadyPromise;
+
+    cvReadyPromise = new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      const deadline = performance.now() + OPENCV_READY_TIMEOUT_MS;
+
+      function waitForRuntime() {
+        if (isCvReady()) {
+          resolve();
+          return;
+        }
+        if (performance.now() >= deadline) {
+          reject(new Error("OpenCV 엔진을 30초 안에 준비하지 못했습니다."));
+          return;
+        }
+        window.setTimeout(waitForRuntime, 50);
+      }
+
+      script.async = true;
+      script.src = OPENCV_URL;
+      script.addEventListener("load", waitForRuntime, { once: true });
+      script.addEventListener(
+        "error",
+        () => reject(new Error("OpenCV 엔진을 불러오지 못했습니다.")),
+        { once: true }
+      );
+      document.head.appendChild(script);
+    }).catch((error) => {
+      cvReadyPromise = null;
+      throw error;
+    });
+
+    return cvReadyPromise;
+  }
+
   /// 단일 채널 8비트 Mat 의 밝기 중앙값. scan.py 의 np.median(blurred) 대응.
   function medianOfMat(mat) {
     const data = mat.data;
@@ -231,6 +274,8 @@
     }
     if (stream) return;
     try {
+      emitStatus("문서 스캔 엔진 불러오는 중...");
+      await loadOpenCv();
       emitStatus("카메라 권한 요청 중...");
       stream = await navigator.mediaDevices.getUserMedia({
         video: { width: 640, height: 480 },
